@@ -1,3 +1,12 @@
+//音のライブラリ
+import ddf.minim.*;
+import ddf.minim.signals.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+
+Minim minim;
+AudioSample soundEffect;
+
 int maxNum=1000;
 int currentNum=1;
 float[]x=new float[maxNum];
@@ -26,7 +35,11 @@ void setup() {
   y[0]=height/2;
   r[0]=maxR;
   closestIndex[0]=0;
-        
+
+
+  //----------------minim
+  minim = new Minim(this);
+  soundEffect = minim.loadSample("a007.mp3", 2048);
 }
 
 void draw() {
@@ -34,7 +47,7 @@ void draw() {
 
   //----------------intaractive
   if (frameCount%5==0) {
-
+    soundEffect.trigger();
     float newX=random(width-mouseRect)+mouseRect/2;
     float newY=random(height-mouseRect)+mouseRect/2;
     float newR=random(minR, maxR);
@@ -93,4 +106,10 @@ void draw() {
   if (currentNum>maxNum) {
     noLoop();
   }
+}
+
+void stop() {
+  soundEffect.close();
+  minim.stop();
+  super.stop();
 }
